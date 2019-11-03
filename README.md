@@ -30,11 +30,16 @@ $ CTRL+A D
 
 ### Connect your WS2801 LED Stripe(4-Pin)
 Connnect GND to a GND Pin
+
 Connect V+ to 5V (External Power Adapter if possible DV510A)
+
 Connect CI to GPIO Pin 10
-Connect DI to GPIO Pin 09
+
+Connect DI to GPIO Pin 11
+
 According to this image(Raspberry Pi 3 Model B)
-![Raspberry Pi 3 Model B GPIO Header](https://www.element14.com/community/docs/DOC-73950/l/raspberry-pi-3-model-b-gpio-40-pin-block-pinout)
+
+![Raspberry Pi 3 Model B GPIO Header](http://www.kraj.in/wp-content/uploads/2017/04/RPi3_gpio-920x675.png)
 
 ### Run Backend
 Run Python Backend(yes in Development Mode because I'm to stupid to set it up for Production Mode)
