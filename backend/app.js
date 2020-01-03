@@ -15,7 +15,7 @@ let lastColor = {
 let state = false
 
 
-//pixels.connect(leds) TODO uncomment on rpi
+pixels.connect(leds)
 pixels.clear();
 pixels.update()
 
@@ -38,7 +38,7 @@ app.post('/api/pixels', (req, res) => {
     state = true
     let rgb = toRGB(req.body.color)
     console.log(`filling pixels with color [${rgb.r}, ${rgb.g}, ${rgb.b}]...`)
-    // pixels.fill(rgb.r, rgb.g, rgb.b)
+    pixels.fill(rgb.r, rgb.g, rgb.b)
     res.send()
 })
 
@@ -47,7 +47,7 @@ app.get('/api/pixel', (req, res) => {
     let pixel = req.body.pixel
     let rgb = toRGB(req.body.color)
     console.log(`filling pixel '${pixel + 1}' with color [${rgb.r}, ${rgb.g}, ${rgb.b}]...`)
-    // pixels.setColor(pixel, [rgb.r, rgb.g, rgb.b])
+    pixels.setColor(pixel, [rgb.r, rgb.g, rgb.b])
     res.send()
 })
 
@@ -56,12 +56,12 @@ app.get('/api/state', (req, res) => {
     if(state) {
         console.log(`turning pixels on`)
         let rgb = toRGB(req.body.color)
-        // pixels.fill(rgb.r, rgb.g, rgb.b)
+        pixels.fill(rgb.r, rgb.g, rgb.b)
     }
     else {
         console.log(`turning pixels off`)
-        // pixels.clear()
-        // pixels.update()
+        pixels.clear()
+        pixels.update()
     }
     res.send()
 })
