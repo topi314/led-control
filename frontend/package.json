@@ -11,9 +11,11 @@
     "@radial-color-picker/vue-color-picker": "^2.3.0",
     "color-convert": "^2.0.1",
     "core-js": "^3.3.2",
+    "keen-ui": "^1.2.1",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
     "vue": "^2.6.10",
-    "vue-resource": "^1.5.1",
-    "vue-slider-component": "^3.0.41"
+    "vue-resource": "^1.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

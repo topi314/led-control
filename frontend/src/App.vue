@@ -15,7 +15,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 body, html{
   background-color: #2c3e50;
   margin: 0;
@@ -27,5 +27,15 @@ body, html{
   text-align: center;
   color: white;
   height: 100%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
 }
 </style>
