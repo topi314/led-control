@@ -38,7 +38,7 @@ app.post('/api/pixels', (req, res) => {
     state = true
     let rgb = toRGB(req.body.color)
     console.log(`filling pixels with color [${rgb.r}, ${rgb.g}, ${rgb.b}]...`)
-    pixels.fill(rgb.r, rgb.g, rgb.b)
+    pixels.fill([rgb.r, rgb.g, rgb.b])
     pixels.update()
     res.send()
 })
