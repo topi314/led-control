@@ -18,7 +18,7 @@ let state = false
 pixels.connect(leds)
 pixels.clear();
 pixels.update()
-leds.fill(0xFF, 255, 0x00);
+pixels.fill(0xFF, 255, 0x00);
 
 app.use(cors())
 app.use(bodyParser.json())
