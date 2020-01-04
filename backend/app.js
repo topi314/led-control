@@ -18,6 +18,7 @@ let state = false
 pixels.connect(leds)
 pixels.clear();
 pixels.update()
+leds.fill(0xFF, 255, 0x00);
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -39,7 +40,6 @@ app.post('/api/pixels', (req, res) => {
     let rgb = toRGB(req.body.color)
     console.log(`filling pixels with color [${rgb.r}, ${rgb.g}, ${rgb.b}]...`)
     pixels.fill([rgb.r, rgb.g, rgb.b])
-    pixels.update()
     res.send()
 })
 
