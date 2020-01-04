@@ -27,7 +27,7 @@ import 'keen-ui/dist/keen-ui.css'
 import '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
 
 // const host = 'http://light:5000'
-const host = 'http://localhost:5000/api'
+const host = 'http://192.168.178.37:5000/api'
 
 export default {
   name: 'led-control',
