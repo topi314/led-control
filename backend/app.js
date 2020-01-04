@@ -18,6 +18,7 @@ let state = false
 pixels.connect(leds)
 pixels.clear();
 pixels.update()
+console.log('settinmg to yellow')
 pixels.fill(0xFF, 255, 0x00);
 
 app.use(cors())
