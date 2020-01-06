@@ -5,7 +5,7 @@ import path from 'path'
 import colorConvert from 'color-convert'
 import bodyParser from 'body-parser'
 import pixels from 'rpi-ws2801'
-import { spawn } from 'child_process'
+import { spawn, fork, exec } from 'child_process'
 import config from './config'
 
 
@@ -13,6 +13,7 @@ import config from './config'
 const app = express()
 const animationFolder = path.join(__dirname, 'animations')
 const animations = []
+let animationProcess = undefined
 
 let lastColor = {
     hue: 100,
@@ -20,7 +21,6 @@ let lastColor = {
     saturation: 100
 }
 let state = false
-
 
 /* Setup Everything */
 reset()
@@ -45,10 +45,20 @@ app.get('/api/info', (req, res) => {
 
 app.post('/api/animation', (req, res) => {
     let animation = req.body.animation
-    log(animation)
+    if(!animations.includes(animation)) {
+        log('animation not found!')
+        res.send('animation not found!')
+        return
+    }
+    cancelAnimation()
+    log(`animation: ${animation}`)
+    reset()
+    animationProcess = fork(`./animations/${animation}.js`)
+    res.send()
 })
 
 app.post('/api/pixels', (req, res) => {
+    cancelAnimation()
     lastColor = req.body.color
     state = true
     let rgb = toRGB(req.body.color)
@@ -58,6 +68,7 @@ app.post('/api/pixels', (req, res) => {
 })
 
 app.post('/api/pixel', (req, res) => {
+    cancelAnimation()
     state = true
     let pixel = req.body.pixel
     let rgb = toRGB(req.body.color)
@@ -74,6 +85,7 @@ app.post('/api/state', (req, res) => {
         pixels.fill(rgb.r, rgb.g, rgb.b)
     }
     else {
+        cancelAnimation()
         log(`turning pixels off`)
         pixels.clear()
         pixels.update()
@@ -114,6 +126,15 @@ function intToStr(value) {
     return value  > 9 ? `${value}` : `0${value}`
 }
 
+/* Killing the Process is maybe a bit dirty? */
+function cancelAnimation() {
+    if(animationProcess !== undefined) {
+        log('stopping animation')
+        exec(`kill -9 ${animationProcess.pid}`)
+        animationProcess = undefined
+    }
+}
+
 function init() {
     try {
         fs.statSync(animationFolder)
@@ -126,12 +147,14 @@ function init() {
     console.log('searching for animations...')
     fs.readdirSync(animationFolder).forEach(
         (file) => {
-            if(file.includes('.js')) {
-                console.log(file)
-                animations.push(file)
+            let i = file.lastIndexOf('.')
+            let ext = file.substring(i, file.length)
+            if(ext == '.js') {
+                animations.push(file.substring(0, i))
             }
         }
     )
+    log(`Animations loaded: ${animations}`)
     pixels.connect(config.leds)
 }
 
