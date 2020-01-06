@@ -102,7 +102,6 @@ const server = app.listen(config.port, () => {
 
 /* Some Functions */
 function toRGB(color) {
-    console.log(hue)
     let raw = colorConvert.hsl.rgb([
         color.hue,
         color.saturation,
