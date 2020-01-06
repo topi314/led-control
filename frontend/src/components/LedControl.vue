@@ -17,12 +17,15 @@
       <h2>An/Aus</h2>
       <ui-switch v-model="on" @change="onStateChange" />
     </div>
+    <div class="led-control-animation">
+      <ui-select v-model="animation" :options="animations" @input="onAnimationChange" />
+    </div>
   </div>
 </template>
 
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker'
-import { UiSwitch, UiSlider } from 'keen-ui'
+import { UiSwitch, UiSlider, UiSelect } from 'keen-ui'
 import 'keen-ui/dist/keen-ui.css'
 import '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
 
@@ -35,11 +38,14 @@ export default {
   components: {
     ColorPicker,
     UiSwitch,
-    UiSlider
+    UiSlider,
+    UiSelect
   },
 
   data () {
     return {
+      animation: '',
+      animations: [],
       on: true,
       color: {
         hue: 50,
@@ -54,10 +60,14 @@ export default {
       .then(rawResult => {
         let result = JSON.parse(rawResult.bodyText)
         this.color = result.color
+        this.animations = result.animations
       })
   },
 
   methods: {
+    setAnimation () {
+      this.$http.post(`${host}/animation`, { animation: this.animation })
+    },
     setColor () {
       this.$http.post(`${host}/pixels`, { color: this.color })
     },
@@ -67,11 +77,15 @@ export default {
     setState (value) {
       this.$http.post(`${host}/state`, { state: value })
     },
+
+    onAnimationChange (animation) {
+      this.animation = animation
+      this.setAnimation()
+    },
     onSaturationChange (saturation) {
       this.color.saturation = saturation
       this.setColor()
     },
-
     onLuminosityChange (luminosity) {
       this.color.luminosity = luminosity
       this.setColor()
@@ -106,6 +120,10 @@ export default {
     margin-top: 30px;
   }
   &-sliders {
+    width: 80%;
+    margin-top: 10px;
+  }
+  &-animation {
     width: 80%;
     margin-top: 10px;
   }
