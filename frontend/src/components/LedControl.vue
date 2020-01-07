@@ -10,23 +10,31 @@
       @change="setColor"
     />
     <div class="led-control-sliders">
-      <h2>Sättigung</h2>
-      <ui-slider v-model="color.saturation" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onSaturationChange" />
-      <h2>Helligkeit</h2>
-      <ui-slider v-model="color.luminosity" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onLuminosityChange" />
-      <h2>An/Aus</h2>
-      <ui-switch v-model="on" @change="onStateChange" />
+      <div class="led-control-sliders-container">
+        <h2>Sättigung</h2>
+        <ui-slider v-model="color.saturation" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onSaturationChange" />
+      </div>
+      <div class="led-control-sliders-container">
+        <h2>Helligkeit</h2>
+        <ui-slider v-model="color.luminosity" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onLuminosityChange" />
+      </div>
+      <div class="led-control-sliders-container">
+        <h2>An/Aus</h2>
+        <ui-switch v-model="state" @change="onStateChange" />
+      </div>
     </div>
     <div class="led-control-animation">
-      <ui-select v-model="animation" :options="animations" @input="onAnimationChange" />
+      <multiselect v-model="animation" :options="animations" :searchable="false" @input="onAnimationChange" />
     </div>
   </div>
 </template>
 
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker'
-import { UiSwitch, UiSlider, UiSelect } from 'keen-ui'
+import { UiSwitch, UiSlider } from 'keen-ui'
+import Multiselect from 'vue-multiselect'
 import 'keen-ui/dist/keen-ui.css'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 import '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
 
 // const host = 'http://light:5000'
@@ -39,14 +47,15 @@ export default {
     ColorPicker,
     UiSwitch,
     UiSlider,
-    UiSelect
+    Multiselect
   },
 
   data () {
     return {
+      ready: false,
       animation: '',
       animations: [],
-      on: true,
+      state: true,
       color: {
         hue: 50,
         saturation: 100,
@@ -61,6 +70,7 @@ export default {
         let result = JSON.parse(rawResult.bodyText)
         this.color = result.color
         this.animations = result.animations
+        this.ready = true
       })
   },
 
@@ -80,28 +90,48 @@ export default {
 
     onAnimationChange (animation) {
       this.animation = animation
-      this.setAnimation()
+      if (this.ready) {
+        this.setAnimation()
+      }
     },
     onSaturationChange (saturation) {
       this.color.saturation = saturation
-      this.setColor()
+      if (this.ready) {
+        this.setColor()
+      }
     },
     onLuminosityChange (luminosity) {
       this.color.luminosity = luminosity
-      this.setColor()
+      if (this.ready) {
+        this.setColor()
+      }
     },
     onColorChange (hue) {
       this.color.hue = hue
-      this.setColor()
+      if (this.ready) {
+        this.setColor()
+      }
     },
     onStateChange (state) {
-      this.setState(state)
+      this.state = state
+      if (this.ready) {
+        this.setState(state)
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+
+/deep/ .multiselect__tags {
+  background-color: transparent;
+}
+
+/deep/ .multiselect__single {
+  background-color: transparent;
+  color: white;
+}
 
 /deep/.rcp__palette:before {
   background-color: #2c3e50;
@@ -117,11 +147,22 @@ export default {
   justify-content: center;
   align-items: center;
   &-picker {
-    margin-top: 30px;
+    margin-top: 10px;
   }
   &-sliders {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
     width: 80%;
-    margin-top: 10px;
+    &-container {
+      display: flex;
+      width: 100%;
+      & .ui-slider,
+      & .ui-switch {
+        margin-left: 12px;
+        flex-grow: 1;
+      }
+    }
   }
   &-animation {
     width: 80%;
