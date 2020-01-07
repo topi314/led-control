@@ -7,9 +7,10 @@ pixels.connect(config.leds)
 let hue = 0
 let saturation = 100
 let luminosity = 50
+setInterval(run, 50)
 
 /* Run Method (Maybe setTimeout is better?) */
-while(true) {
+function run() {
     let rgb = colorConvert.hsl.rgb([hue, saturation, luminosity])
     pixels.fill(rgb[0], rgb[1], rgb[2], )
     hue++
