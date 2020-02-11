@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js --exec babel-node --presets babel-preset-env"
+    "dev": "nodemon app.js --exec babel-node --presets babel-preset-env",
+    "build": "babel src --out-dir ../dist/backend"
   },
   "author": "",
   "license": "ISC",
