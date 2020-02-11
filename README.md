@@ -1,5 +1,4 @@
 # A LED-Stripe control webinterface
----
 
 Control your WS2801 led stripe via a web browser
 
