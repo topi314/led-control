@@ -1,4 +1,4 @@
 export default {
-    port: 5000,
+    port: 6969,
     leds: 90
 }
