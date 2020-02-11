@@ -22,7 +22,7 @@ $ npm i
 $ npm run build
 ```
 
-or download teh latest release as zip and unpack it
+or download the latest release as zip and unpack it
 
 ---
 
