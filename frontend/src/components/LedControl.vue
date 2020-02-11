@@ -78,11 +78,15 @@ export default {
     },
     setColor () {
       this.$http.post(`${host}/pixels`, { color: this.color })
-      this.state = !this.state
+      if (!this.state) {
+        this.state = true
+      }
     },
     setPixelColor (pixel, rgb) {
       this.$http.post(`${host}/pixels`, { pixel: pixel, color: this.color })
-      this.state = !this.state
+      if (!this.state) {
+        this.state = true
+      }
     },
     setState () {
       this.$http.post(`${host}/state`, { state: this.state })
