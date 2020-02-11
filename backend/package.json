@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon app.js --exec babel-node --presets babel-preset-env",
+    "dev": "nodemon src/app.js --exec babel-node --presets babel-preset-env",
     "build": "babel src --out-dir ../dist/backend"
   },
   "author": "",
