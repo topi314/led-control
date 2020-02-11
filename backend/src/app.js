@@ -6,7 +6,7 @@ import colorConvert from 'color-convert'
 import bodyParser from 'body-parser'
 import pixels from 'rpi-ws2801'
 import { spawn, fork, exec } from 'child_process'
-import config from './config'
+import config from '../config'
 
 
 /* Just some Variables we need */
