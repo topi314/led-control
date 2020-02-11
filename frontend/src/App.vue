@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style lang="less">
+
 body, html{
   background-color: #2c3e50;
   margin: 0;

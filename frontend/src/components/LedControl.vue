@@ -2,25 +2,22 @@
   <div class="led-control">
     <color-picker
       class="led-control-picker"
+      :class="{ state: !state}"
       v-bind="color"
       variant="persistent"
       :mouse-scroll="true"
       :step="10"
       @input="onColorChange"
-      @change="setColor"
+      @change="onStateChange"
     />
     <div class="led-control-sliders">
       <div class="led-control-sliders-container">
         <h2>Sättigung</h2>
-        <ui-slider v-model="color.saturation" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onSaturationChange" />
+        <ui-slider v-model="color.saturation" :interval="10" :step="5" :snapToSteps="true" @change="onSaturationChange" />
       </div>
       <div class="led-control-sliders-container">
         <h2>Helligkeit</h2>
-        <ui-slider v-model="color.luminosity" :interval="10" :step="5" :snapToSteps="true" :showMarker="true" @change="onLuminosityChange" />
-      </div>
-      <div class="led-control-sliders-container">
-        <h2>An/Aus</h2>
-        <ui-switch v-model="state" @change="onStateChange" />
+        <ui-slider v-model="color.luminosity" :interval="10" :step="5" :snapToSteps="true" @change="onLuminosityChange" />
       </div>
     </div>
     <div class="led-control-animation">
@@ -31,7 +28,7 @@
 
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker'
-import { UiSwitch, UiSlider } from 'keen-ui'
+import { UiSlider } from 'keen-ui'
 import Multiselect from 'vue-multiselect'
 import 'keen-ui/dist/keen-ui.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
@@ -45,7 +42,6 @@ export default {
 
   components: {
     ColorPicker,
-    UiSwitch,
     UiSlider,
     Multiselect
   },
@@ -70,7 +66,10 @@ export default {
         let result = JSON.parse(rawResult.bodyText)
         this.color = result.color
         this.animations = result.animations
-        this.ready = true
+        this.state = result.state
+        this.$nextTick(() => {
+          this.ready = true
+        })
       })
   },
 
@@ -80,12 +79,14 @@ export default {
     },
     setColor () {
       this.$http.post(`${host}/pixels`, { color: this.color })
+      this.state = !this.state
     },
     setPixelColor (pixel, rgb) {
       this.$http.post(`${host}/pixels`, { pixel: pixel, color: this.color })
+      this.state = !this.state
     },
-    setState (value) {
-      this.$http.post(`${host}/state`, { state: value })
+    setState () {
+      this.$http.post(`${host}/state`, { state: this.state })
     },
 
     onAnimationChange (animation) {
@@ -112,10 +113,10 @@ export default {
         this.setColor()
       }
     },
-    onStateChange (state) {
-      this.state = state
+    onStateChange () {
+      this.state = !this.state
       if (this.ready) {
-        this.setState(state)
+        this.setState()
       }
     }
   }
@@ -148,6 +149,9 @@ export default {
   align-items: center;
   &-picker {
     margin-top: 10px;
+    &.state /deep/ .rcp__well{
+      background-color: #2c3e50!important;
+    }
   }
   &-sliders {
     display: flex;
@@ -157,8 +161,7 @@ export default {
     &-container {
       display: flex;
       width: 100%;
-      & .ui-slider,
-      & .ui-switch {
+      & .ui-slider {
         margin-left: 12px;
         flex-grow: 1;
       }
