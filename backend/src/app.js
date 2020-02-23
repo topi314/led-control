@@ -29,8 +29,6 @@ app.use(cors())
 app.use(bodyParser.json())
 process.on('SIGTERM', shutdown)
 process.on('SIGINT', shutdown)
-
-
 /* Endpoints */
 app.get('/api/info', (req, res) => {
     log('info request')
@@ -53,7 +51,7 @@ app.post('/api/animation', (req, res) => {
     cancelAnimation()
     log(`animation: ${animation}`)
     reset()
-    animationProcess = fork(`./animations/${animation}.js`)
+    animationProcess = fork(`${animationFolder}/${animation}.js`)
     res.send()
 })
 
