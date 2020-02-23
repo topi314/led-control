@@ -1,6 +1,6 @@
 /* Import ws2801 library and our config file */
 import pixels from 'rpi-ws2801'
-import config from '../../config'
+import config from '../config'
 
 /********************************
  * Make Connection to LED-Stripe 
