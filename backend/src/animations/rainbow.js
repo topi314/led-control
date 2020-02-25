@@ -14,6 +14,6 @@ module.exports = class Example extends Animation{
             if(hue > 360) {
                 hue = 0
             }
-        }, 1250)
+        }, 200)
     }
 }
