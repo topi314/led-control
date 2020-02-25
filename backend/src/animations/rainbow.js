@@ -1,4 +1,5 @@
-import Animation from "./animation"
+import colorConvert from 'color-convert'
+import Animation from './animation'
 module.exports = class Example extends Animation{
 
     constructor(pixels, config) {
