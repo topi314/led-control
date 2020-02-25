@@ -5,7 +5,7 @@ import path from 'path'
 import colorConvert from 'color-convert'
 import bodyParser from 'body-parser'
 import pixels from 'rpi-ws2801'
-import { spawn, fork, exec } from 'child_process'
+import { spawn } from 'child_process'
 import config from './config'
 
 
@@ -124,7 +124,6 @@ function intToStr(value) {
 function startAnimation(animation) {
     log(`starting animation: ${animation}`)
     reset()
-    //animationProcess = fork(`${animationFolder}/${animation}.js`)
     let Animation = require(`${animationFolder}/${animation}.js`)
     animationProcess = new Animation(pixels, config)
 }
@@ -133,7 +132,6 @@ function startAnimation(animation) {
 function cancelAnimation() {
     if(animationProcess !== undefined) {
         log(`stopping animation: ${animationProcess}`)
-        //exec(`kill -9 ${animationProcess.pid}`)
         animationProcess.kill()
         animationProcess = undefined
     }
