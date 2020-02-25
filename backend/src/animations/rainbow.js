@@ -4,7 +4,9 @@ module.exports = class Example extends Animation{
 
     constructor(pixels, config) {
         super()
-        
+        let hue = 0
+        let saturation = 100
+        let luminosity = 50
         super.start(() => {
             let rgb = colorConvert.hsl.rgb([hue, saturation, luminosity])
             pixels.fill(rgb[0], rgb[1], rgb[2], )
