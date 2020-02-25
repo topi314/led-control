@@ -49,9 +49,7 @@ app.post('/api/animation', (req, res) => {
         return
     }
     cancelAnimation()
-    log(`animation: ${animation}`)
-    reset()
-    animationProcess = fork(`${animationFolder}/${animation}.js`)
+    startAnimation(animation)
     res.send()
 })
 
@@ -123,11 +121,20 @@ function intToStr(value) {
     return value  > 9 ? `${value}` : `0${value}`
 }
 
+function startAnimation(animation) {
+    log(`starting animation: ${animation}`)
+    reset()
+    //animationProcess = fork(`${animationFolder}/${animation}.js`)
+    let Animation = require(`${animationFolder}/${animation}.js`)
+    animationProcess = new Animation(pixels, config)
+}
+
 /* Killing the Process is maybe a bit dirty? */
 function cancelAnimation() {
     if(animationProcess !== undefined) {
-        log('stopping animation')
-        exec(`kill -9 ${animationProcess.pid}`)
+        log(`stopping animation: ${animationProcess}`)
+        //exec(`kill -9 ${animationProcess.pid}`)
+        animationProcess.kill()
         animationProcess = undefined
     }
 }
@@ -143,10 +150,10 @@ function init() {
     }
     console.log('searching for animations...')
     fs.readdirSync(animationFolder).forEach(
-        (file) => {
+        file => {
             let i = file.lastIndexOf('.')
             let ext = file.substring(i, file.length)
-            if(ext == '.js') {
+            if(ext == '.js' && file !== "animation.js") {
                 animations.push(file.substring(0, i))
             }
         }
