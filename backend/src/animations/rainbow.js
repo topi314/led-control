@@ -1,19 +1,17 @@
 import colorConvert from 'color-convert'
 import Animation from './animation'
-module.exports = class Example extends Animation{
+module.exports = class Rainbow extends Animation{
 
     constructor(pixels, config) {
         super()
-        let hue = 0
+        let val = 360 / config.leds
         let saturation = 100
         let luminosity = 50
-        super.start(() => {
-            let rgb = colorConvert.hsl.rgb([hue, saturation, luminosity])
-            pixels.fill(rgb[0], rgb[1], rgb[2], )
-            hue++
-            if(hue > 360) {
-                hue = 0
-            }
-        }, 100)
+        let hue = val
+        for (let i = 0; i < config.leds; i++) {
+            pixels.setColor(i, colorConvert.hsl.rgb([hue, saturation, luminosity]))
+            hue += val
+        }
+        pixels.update()
     }
 }
