@@ -14,6 +14,7 @@ const app = express()
 const animationFolder = path.join(__dirname, 'animations')
 const animations = []
 let animationProcess = undefined
+let activeAnimation = ""
 
 let lastColor = {
     hue: 100,
@@ -36,7 +37,8 @@ app.get('/api/info', (req, res) => {
         color: lastColor,
         state: state,
         count: config.leds,
-        animations: animations
+        animations: animations,
+        animation: activeAnimation
     }
     res.send(JSON.stringify(data))
 })
@@ -126,6 +128,7 @@ function startAnimation(animation) {
     reset()
     let Animation = require(`${animationFolder}/${animation}.js`)
     animationProcess = new Animation(pixels, config)
+    activeAnimation = animation
 }
 
 /* Killing the Process is maybe a bit dirty? */
@@ -134,6 +137,7 @@ function cancelAnimation() {
         log(`stopping animation: ${animationProcess}`)
         animationProcess.kill()
         animationProcess = undefined
+        activeAnimation = ""
     }
 }
 

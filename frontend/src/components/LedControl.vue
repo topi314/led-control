@@ -34,8 +34,8 @@ import 'keen-ui/dist/keen-ui.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
 
-const host = 'http://192.168.178.37:6969/api'
-// const host = 'http://localhost:6969/api'
+// const host = 'http://192.168.178.37:6969/api'
+const host = 'http://localhost:6969/api'
 
 export default {
   name: 'led-control',
@@ -66,6 +66,7 @@ export default {
         let result = JSON.parse(rawResult.bodyText)
         this.color = result.color
         this.animations = result.animations
+        this.animation = result.animation
         this.state = result.state
         this.$nextTick(() => {
           this.ready = true
