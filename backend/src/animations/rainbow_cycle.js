@@ -4,17 +4,17 @@ module.exports = class RainbowCycle extends Animation{
 
     constructor(pixels, config) {
         super()
-        let val = 360 / config.pixels
+        let val = 360 / config.leds
         let hue = 0
         let saturation = 100
         let luminosity = 50
         super.start(() => {
             hue = val
-            for (let i = 0; i < config.pixels; i++) {
-                let rgb = colorConvert.hsl.rgb([hue, saturation, luminosity])
-                pixels.setColor(i, rgb)
+            for (let i = 0; i < config.leds; i++) {
+                pixels.setColor(i, colorConvert.hsl.rgb([hue, saturation, luminosity]))
                 hue += val
             }
+            pixels.update()
         }, 100)
     }
 }
