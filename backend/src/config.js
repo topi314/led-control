@@ -1,4 +1,4 @@
 export default {
-    port: 6969,
-    leds: 90
+  port: process.env.PORT || 6969,
+  leds: process.env.LED_COUNT || 90
 }

@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon src/app.js --exec babel-node --presets babel-preset-env",
-    "build": "babel src --out-dir ../dist/backend"
+    "build": "babel src --out-dir ./dist/"
   },
   "author": "",
   "license": "ISC",
